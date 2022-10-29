@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from './auth';
 import { blogdata } from './blogdata'
 
 function BlogPost() {
@@ -7,6 +8,10 @@ function BlogPost() {
   const { slug } = useParams();
   const blogpost = blogdata.find(post => post.slug === slug);
   console.log(blogpost);
+
+  const auth = useAuth();
+
+  const canDelete = auth.user?.isAdmin || blogpost.author === auth.user?.username;
 
   const returnToBlog = () => {
     navigate('/blog');
@@ -17,6 +22,10 @@ function BlogPost() {
       <button onClick={returnToBlog}>Volver a BlogPage</button>
       <p>{blogpost.author}</p>
       <p>{blogpost.content}</p>
+
+      {canDelete && (
+        <button>Eliminar blogpost</button>
+      )}
     </>
   )
 }
