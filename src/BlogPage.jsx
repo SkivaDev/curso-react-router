@@ -1,16 +1,25 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import { useAuth } from './auth'
 import { blogdata } from './blogdata'
+
+
 function BlogPage() {
+  // const auth = useAuth();
+  const {blogs, user} = useAuth();
+
   return (
     <>
       <h1>BLOG</h1>
       <Outlet />
       <ul>
-        {blogdata.map(post => (
+        {blogs.map(post => (
           <BlogLink key={post.slug} post={post} />
         ))}
       </ul>
+      {user && (
+        <button>Publicar un nuevo BlogPost</button>
+      )}
     </>
   )
 }
@@ -25,4 +34,4 @@ function BlogLink({ post }){
 
 
 
-export default BlogPage
+export default BlogPage;

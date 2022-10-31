@@ -3,8 +3,32 @@ import { useState } from 'react';
 import { createContext } from 'react';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import useLocalStorage from './useLocalStorage';
+//import { useLocalStorage } from './useLocalStorage.jsx';
 
 const adminList = ["Leonardo", "Fabrizio", "Skiva7"]
+const creatorList = ["Rosa", "Ana", "Yuli"]
+const editorList = ["Elpepe", "Eldiego", "Eljose"]
+
+const roles = [
+  { role: "admin", update: true, delete: true },
+  { role: "creator", update: true, delete: true },
+  { role: "editor", update: true, delete: false },
+];
+
+//utils
+const slugify = (string) => {
+  return string.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+};
+const addRole = (username) => {
+  const isAdmin = adminList.find(admin => admin === username);
+  const isCreator = creatorList.find(creator => creator === username);
+  const isEditor = editorList.find(editor => editor === username);
+  if(isAdmin) return roles[0];
+  if(isCreator) return roles[1];
+  if(isEditor) return roles[2];
+};
+
 
 const AuthContext = createContext();
 
@@ -13,8 +37,7 @@ function AuthProvider({children}) {
   const [user, setUser] = useState(null);
 
   const login = ({ username }) => {
-    const isAdmin = adminList.find(admin => admin === username)
-    setUser({ username, isAdmin });
+    setUser({ username, ...addRole(username)} );
     navigate('/profile');
   };
 
@@ -23,8 +46,58 @@ function AuthProvider({children}) {
     navigate('/');
   };
 
-  const auth = {user, login, logout}
+  ////////////////////
+  const {
+    item: blogs,
+    saveItem: saveBlogs,
+  } = useLocalStorage('Blogs_V1', []);
+  
+  const [openFormBlog, setOpenFormBlog] = useState(false);
 
+  const addBlog = (title, autor, content) => {
+    const newBlogs = [...blogs];
+    const id = Math.floor(Math.random() * 999999);
+    newBlogs.push({
+      id: id,
+      title,
+      slug: id + "-" + slugify(title),
+      content,
+      autor,
+    });
+    saveBlogs(newBlogs);
+  };
+
+  const editBlog = (blog) => {
+    const newBlogs = blogs.map((t) => {
+      if (t.id === blog.id) {
+        return blog;
+      }
+      return t;
+    });
+    saveBlogs([...newBlogs]);
+    setOpenFormBlog(false);
+  }
+
+  const deleteBlog = (id) => {
+    const newBlogs = blogs.filter((blog) => blog.id !== id);
+    saveBlogs(newBlogs);
+  };
+
+
+  /////////////
+  const auth = {
+    user, 
+    login, 
+    logout,
+
+
+    blogs,
+    addBlog,
+    editBlog,
+    deleteBlog,
+    openFormBlog,
+  };
+  ///////////
   return (
     <AuthContext.Provider value={auth}>
       {children}
