@@ -10,6 +10,7 @@ function LoginPage() {
   const login = (e) => {
     e.preventDefault();
     auth.login({username});
+    console.log(username, " ", auth.user);
   };
 
   if(auth.user) {

@@ -10,9 +10,25 @@ const editorList = ["Elpepe", "Eldiego", "Eljose"]
 
 const roles = [
   { role: "admin", update: true, delete: true },
-  { role: "creator", update: true, delete: true },
+  { role: "creator", update: false, delete: true },
   { role: "editor", update: true, delete: false },
+  { role: "default", update: false, delete: false },
 ];
+
+//utils
+const slugify = (string) => {
+  return string.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+};
+const addRole = (username) => {
+  const isAdmin = adminList.find(admin => admin === username);
+  const isCreator = creatorList.find(creator => creator === username);
+  const isEditor = editorList.find(editor => editor === username);
+  if(isAdmin) return roles[0];
+  if(isCreator) return roles[1];
+  if(isEditor) return roles[2];
+  return roles[3];
+};
+
 
 const AuthContext = createContext();
 
@@ -21,8 +37,10 @@ function AuthProvider({children}) {
   const [user, setUser] = useState(null);
 
   const login = ({ username }) => {
-    const isAdmin = adminList.find(admin => admin === username)
-    setUser({ username, isAdmin });
+    setUser({ 
+      username,
+      ...addRole(username)
+    } );
     navigate('/profile');
   };
 

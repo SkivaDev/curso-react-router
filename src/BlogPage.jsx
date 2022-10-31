@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
+import { useAuth } from './auth'
 import { blogdata } from './blogdata'
 function BlogPage() {
+  const {user} = useAuth();
+  
   return (
     <>
       <h1>BLOG</h1>
@@ -11,6 +14,9 @@ function BlogPage() {
           <BlogLink key={post.slug} post={post} />
         ))}
       </ul>
+      {user && (
+        <button>Publicar un nuevo BlogPost</button>
+      )}
     </>
   )
 }
