@@ -5,6 +5,14 @@ import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const adminList = ["Leonardo", "Fabrizio", "Skiva7"]
+const creatorList = ["Rosa", "Ana", "Yuli"]
+const editorList = ["Elpepe", "Eldiego", "Eljose"]
+
+const roles = [
+  { role: "admin", update: true, delete: true },
+  { role: "creator", update: true, delete: true },
+  { role: "editor", update: true, delete: false },
+];
 
 const AuthContext = createContext();
 
