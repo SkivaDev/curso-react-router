@@ -1,8 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
 import { createContext } from 'react';
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { blogdata } from './blogdata';
+import useLocalStorage from './useLocalStorage';
 
 const adminList = ["Leonardo", "Fabrizio", "Skiva7"]
 const creatorList = ["Rosa", "Ana", "Yuli"]
@@ -48,6 +51,22 @@ function AuthProvider({children}) {
     setUser(null);
     navigate('/');
   };
+
+  ////////////////////
+  // useEffect(() => {
+  //   return {
+  //     item: blogs,
+  //     saveItem: saveBlogs,
+  //   } = useLocalStorage('Blogs_V1', []);
+  // }, [])
+
+  // // const {
+  // //   item: blogs,
+  // //   saveItem: saveBlogs,
+  // // } = useLocalStorage('Blogs_V1', []);
+
+  // console.log(blogs);
+
 
   const auth = {user, login, logout}
 
