@@ -53,19 +53,13 @@ function AuthProvider({children}) {
   };
 
   ////////////////////
-  // useEffect(() => {
-  //   return {
-  //     item: blogs,
-  //     saveItem: saveBlogs,
-  //   } = useLocalStorage('Blogs_V1', []);
-  // }, [])
 
-  // // const {
-  // //   item: blogs,
-  // //   saveItem: saveBlogs,
-  // // } = useLocalStorage('Blogs_V1', []);
+  const {
+    item: blogs,
+    saveItem: saveBlogs,
+  } = useLocalStorage('Blogs_V1', []);
 
-  // console.log(blogs);
+  console.log(blogs);
 
 
   const auth = {user, login, logout}
