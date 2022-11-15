@@ -1,20 +1,24 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 function useLocalStorage(itemName, initialValue) {
   const [item, setItem] = useState(initialValue);
 
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
+  useEffect(() => {
 
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
+    const localStorageItem = localStorage.getItem(itemName);
+    let parsedItem;
 
-  setItem(parsedItem);
+    if (!localStorageItem) {
+      localStorage.setItem(itemName, JSON.stringify(initialValue));
+      parsedItem = initialValue;
+    } else {
+      parsedItem = JSON.parse(localStorageItem);
+    }
+  
+    setItem(parsedItem);
+  }, []);
 
   const saveItem = (newItem) => {
     // Manejamos la tarea dentro de un try/catch por si ocurre algún error
