@@ -3,14 +3,14 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "./auth";
 
 function Menu() {
-  const auth = useAuth();
+  const {user} = useAuth();
 
   return (
     <nav>
       <ul>
         {routes.map((route) => {
-          if(route.publicOnly && auth.user) return null;
-          if(route.private && !auth.user) return null;
+          if(route.publicOnly && user) return null;
+          if(route.private && !user) return null;
 
 
           return (

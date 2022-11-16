@@ -7,7 +7,7 @@ function ProfilePage() {
     <>
       <h1>Profile</h1>
       <p>
-        Welcome, {user?.username} {user?.role}
+        Welcome {user.username}, eres un {user.role || "usuario"}
       </p>
       {}
     </>

@@ -1,0 +1,7 @@
+.BlogForm {
+  display: none;
+}
+
+.BlogForm--open {
+  display: block;
+}
