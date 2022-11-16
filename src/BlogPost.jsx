@@ -6,14 +6,19 @@ function BlogPost() {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const { blogs, user } = useAuth();
+  const { blogs, user , openModeEditBlog, deleteBlog} = useAuth();
   const blogpost = blogs.find((post) => post.slug === slug);
   console.log(blogpost);
 
-  const auth = useAuth();
-
   const canDelete = user?.delete || blogpost?.author === user?.username;
   const canEdit = user?.update;
+
+  const onOpenEdit = () => {
+    openModeEditBlog(blogpost.id);
+  }
+  const onDelete = () => {
+    deleteBlog(blogpost.id);
+  }
 
   const returnToBlog = () => {
     navigate("/blog");
@@ -29,8 +34,8 @@ function BlogPost() {
         </>
       )}
 
-      {canDelete && <button>Eliminar blogpost</button>}
-      {canEdit && <button>Editar blogpost</button>}
+      {canDelete && <button onClick={onDelete}>Eliminar blogpost</button>}
+      {canEdit && <button onClick={onOpenEdit}>Editar blogpost</button>}
     </>
   );
 }

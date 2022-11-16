@@ -54,16 +54,17 @@ function AuthProvider({children}) {
   
   const [openFormBlog, setOpenFormBlog] = useState(false);
   const [blogEdit, setBlogEdit] = useState("")
+  const [editFormStatus, setEditFormStatus] = useState(false);
 
-  const addBlog = (title, autor, content) => {
+  const addBlog = (title, author, content) => {
     const newBlogs = [...blogs];
-    const id = Math.floor(Math.random() * 999999);
+    const id = new Date().getTime().toString();
     newBlogs.push({
       id: id,
       title,
       slug: id + "-" + slugify(title),
       content,
-      autor,
+      author,
     });
     saveBlogs(newBlogs);
   };
@@ -86,12 +87,12 @@ function AuthProvider({children}) {
 
   // Identifica el todo en el que se hizo click edit y abre el modal
   // onEdit (todolist para todoItem)
-  const openModeEditTodo = (id) => {
+  const openModeEditBlog = (id) => {
     const blog = blogs.find((blog) => blog.id === id);
     setBlogEdit(blog);
     if(blog) {
       setOpenFormBlog(true);
-      // setFormStatus(true);
+      setEditFormStatus(true);
     }
   }
 
@@ -110,7 +111,10 @@ function AuthProvider({children}) {
     deleteBlog,
     openFormBlog,
     setOpenFormBlog,
-    openModeEditTodo,
+    openModeEditBlog,
+    setEditFormStatus,
+    editFormStatus,
+    blogEdit,
   };
   ///////////
   return (
